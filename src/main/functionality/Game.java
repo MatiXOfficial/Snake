@@ -6,7 +6,7 @@ public class Game
 {
     public static void main(String[] args)
     {
-        SnakeGameMap gameMap = new SnakeGameMap(25);
-        GameFrame gameFrame = new GameFrame(gameMap, 200);
+        SnakeGameMap gameMap = new SnakeGameMap(20);
+        GameFrame gameFrame = new GameFrame(gameMap, 500);
     }
 }

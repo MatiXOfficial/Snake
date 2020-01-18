@@ -30,7 +30,10 @@ public class Snake
 
     public int getLength()
     {
-        return this.occupiedPositions.size();
+        int length = this.occupiedPositions.size();
+        if (!moveEnd)
+            length++;
+        return length;
     }
 
     public Vector2d getEndPosition()

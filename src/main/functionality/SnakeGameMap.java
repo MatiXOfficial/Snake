@@ -14,7 +14,6 @@ public class SnakeGameMap
     private HashSet<Vector2d> freePositions;
     private Vector2d foodPosition;
 
-    private boolean isGameOver;
     private static Random generator;
 
     public SnakeGameMap(int size, Random generator)
@@ -22,7 +21,6 @@ public class SnakeGameMap
         if (size <= 2)
             throw new IllegalArgumentException("Size has to be greater than 2!");
 
-        this.isGameOver = false;
         SnakeGameMap.generator = generator;
         Orientation.setGenerator(generator);
 
@@ -30,8 +28,8 @@ public class SnakeGameMap
         this.topRight = new Vector2d(size - 1, size - 1);
 
         this.freePositions = new HashSet<>();
-        for (int x = bottomLeft.x; x < topRight.x; x++)
-            for (int y = bottomLeft.y; y < topRight.y; y++)
+        for (int x = bottomLeft.x; x <= topRight.x; x++)
+            for (int y = bottomLeft.y; y <= topRight.y; y++)
                 freePositions.add(new Vector2d(x, y));
 
         this.snake = new Snake(getRandomFreePosition());
@@ -63,8 +61,6 @@ public class SnakeGameMap
 
     public void moveSnake(OrientationChange orientationChange)
     {
-        if (isGameOver)
-            throw new IllegalStateException("Game Over!");
         if (orientationChange == OrientationChange.LEFT)
             snake.rotateHeadLeft();
         else if (orientationChange == OrientationChange.RIGHT)
@@ -80,7 +76,7 @@ public class SnakeGameMap
         }
         else if (!freePositions.contains(snake.getHeadPosition()))
         {
-            this.isGameOver = true;
+            throw new IllegalStateException("Game Over!");
         }
         else
         {
@@ -88,6 +84,11 @@ public class SnakeGameMap
                 this.freePositions.add(previousEndPosition);
             this.freePositions.remove(snake.getHeadPosition());
         }
+    }
+
+    public int getResult()
+    {
+        return this.snake.getLength();
     }
 
     public int getSize()
