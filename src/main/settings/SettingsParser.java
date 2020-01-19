@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Scanner;
 
 public class SettingsParser
@@ -15,12 +14,12 @@ public class SettingsParser
 
     public static HashMap<String, Integer> getSettings() throws FileNotFoundException
     {
-        return getSettingsfromFile(settingsFile);
+        return getSettingsFromFile(settingsFile);
     }
 
     public static HashMap<String, Integer> getDefaults() throws FileNotFoundException
     {
-        return getSettingsfromFile(defaultsFile);
+        return getSettingsFromFile(defaultsFile);
     }
 
     public static void saveSettings(HashMap<String, Integer> settingsDict) throws IOException
@@ -31,7 +30,7 @@ public class SettingsParser
         fw.close();
     }
 
-    private static HashMap<String, Integer> getSettingsfromFile(File file) throws FileNotFoundException
+    private static HashMap<String, Integer> getSettingsFromFile(File file) throws FileNotFoundException
     {
         Scanner scanner = new Scanner(file);
         HashMap<String, Integer> settingsDict = new HashMap<>();

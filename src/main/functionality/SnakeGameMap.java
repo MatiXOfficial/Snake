@@ -16,7 +16,7 @@ public class SnakeGameMap
 
     private static Random generator;
 
-    public SnakeGameMap(int size, Random generator)
+    private SnakeGameMap(int size, Random generator)
     {
         if (size <= 2)
             throw new IllegalArgumentException("Size has to be greater than 2!");
@@ -32,15 +32,9 @@ public class SnakeGameMap
             for (int y = bottomLeft.y; y <= topRight.y; y++)
                 freePositions.add(new Vector2d(x, y));
 
-        this.snake = new Snake(getRandomFreePosition());
-        int which = generator.nextInt(2);
-        while(!this.freePositions.contains(this.snake.getHeadPosition().add(this.snake.getHeadOrientation().toVector()).add(this.snake.getHeadOrientation().toVector())))
-        {
-            if (which == 0)
-                this.snake.rotateHeadRight();
-            else
-                this.snake.rotateHeadLeft();
-        }
+        Vector2d snakeVector = new Vector2d((size - 1) / 2, (size - 1) / 2);
+        this.snake = new Snake(snakeVector);
+        freePositions.remove(snakeVector);
         this.foodPosition = getRandomFreePosition();
     }
 

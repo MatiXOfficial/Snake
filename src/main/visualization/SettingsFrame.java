@@ -100,8 +100,8 @@ public class SettingsFrame extends JFrame implements ActionListener
             HashMap<String, Integer> settingsDict = new HashMap<>();
             try
             {
-                if (Integer.valueOf(sizeTextField.getText()) < 2)
-                    throw new IllegalArgumentException("Rozmiar nie może być mniejszy od 2!");
+                if (Integer.valueOf(sizeTextField.getText()) <= 2)
+                    throw new IllegalArgumentException("Rozmiar musi być większy od 2!");
                 if (Integer.valueOf(delayTextField.getText()) <= 0)
                     throw new IllegalArgumentException("Opóźnienie musi być większe od 0!");
                 settingsDict.put("size", Integer.valueOf(sizeTextField.getText()));
