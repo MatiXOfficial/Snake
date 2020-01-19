@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.FileNotFoundException;
 
 public class GameOverFrame extends JFrame implements ActionListener
 {
@@ -64,8 +65,12 @@ public class GameOverFrame extends JFrame implements ActionListener
         Object source = e.getSource();
         if (source == againButton)
         {
-            SnakeGameMap gameMap = new SnakeGameMap(20);
-            GameFrame gameFrame = new GameFrame(gameMap, 150);
+            try {
+                SettingsFrame settingsFrame = new SettingsFrame();
+                dispose();
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            }
         }
         else if (source == exitButton)
         {
