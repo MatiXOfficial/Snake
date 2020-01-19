@@ -14,6 +14,7 @@ public class MapPanel extends JPanel
     private int width;
     private int height;
     private double mult;
+    private double eyeMult;
 
     public MapPanel(int width, int height, SnakeGameMap gameMap, double mult)
     {
@@ -21,6 +22,7 @@ public class MapPanel extends JPanel
         this.height = height;
         this.gameMap = gameMap;
         this.mult = mult;
+        this.eyeMult = mult / 6;
     }
 
     @Override
@@ -63,6 +65,44 @@ public class MapPanel extends JPanel
         double x = vec.x * mult;
         double y = height - (vec.y + 1) * mult;
         g2d.fill(new Rectangle2D.Double(x, y, mult, mult));
+        paintSnakeEyes(g2d, x, y);
+    }
+
+    private void paintSnakeEyes(Graphics2D g2d, double x0, double y0)
+    {
+        g2d.setPaint(new Color(255, 255, 255));
+        double x1, x2, y1, y2;
+        switch(gameMap.getSnakeOrientation())
+        {
+            case UP:
+                x1 = x0 + eyeMult;
+                x2 = x0 + mult - 2*eyeMult;
+                y1 = y0;
+                y2 = y0;
+                break;
+            case RIGHT:
+                x1 = x0 + mult - eyeMult;
+                x2 = x0 + mult - eyeMult;
+                y1 = y0 + eyeMult;
+                y2 = y0 + mult - 2*eyeMult;
+                break;
+            case DOWN:
+                x1 = x0 + eyeMult;
+                x2 = x0 + mult - 2*eyeMult;
+                y1 = y0 + mult - eyeMult;
+                y2 = y0 + mult - eyeMult;
+                break;
+            case LEFT:
+                x1 = x0;
+                x2 = x0;
+                y1 = y0 + eyeMult;
+                y2 = y0 + mult - 2*eyeMult;
+                break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + gameMap.getSnakeOrientation());
+        }
+        g2d.fill(new Rectangle2D.Double(x1, y1, eyeMult, eyeMult));
+        g2d.fill(new Rectangle2D.Double(x2, y2, eyeMult, eyeMult));
     }
 
     private void paintFood(Graphics2D g2d)

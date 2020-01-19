@@ -3,11 +3,13 @@ package visualization;
 import functionality.OrientationChange;
 import functionality.Snake;
 import functionality.SnakeGameMap;
+import functionality.Vector2d;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.LinkedList;
 
 public class GameFrame extends JFrame implements KeyListener
 {
@@ -49,7 +51,7 @@ public class GameFrame extends JFrame implements KeyListener
         currentResult = new JLabel("Twój wynik: " + gameMap.getResult());
         currentResult.setFont(new Font("Arial", Font.PLAIN, 20));
         currentResult.setLocation(10, height - 80);
-        currentResult.setSize(130, 30);
+        currentResult.setSize(200, 30);
         add(currentResult);
 
         this.timer = new Timer(delay, e -> mapUpdate());

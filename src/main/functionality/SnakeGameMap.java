@@ -34,7 +34,7 @@ public class SnakeGameMap
 
         this.snake = new Snake(getRandomFreePosition());
         int which = generator.nextInt(2);
-        while(!this.freePositions.contains(this.snake.getHeadPosition().add(this.snake.getHeadOrientation().toVector())))
+        while(!this.freePositions.contains(this.snake.getHeadPosition().add(this.snake.getHeadOrientation().toVector()).add(this.snake.getHeadOrientation().toVector())))
         {
             if (which == 0)
                 this.snake.rotateHeadRight();
