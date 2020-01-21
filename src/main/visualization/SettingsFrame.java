@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class SettingsFrame extends JFrame implements ActionListener
 {
     private int width = 315;
-    private int height = 200;
+    private int height = 220;
 
     private JLabel settingsTitleLabel;
 
@@ -23,6 +23,9 @@ public class SettingsFrame extends JFrame implements ActionListener
 
     private JLabel delayLabel;
     private JTextField delayTextField;
+
+    private JLabel obstaclesLabel;
+    private JTextField obstaclesTextField;
 
     private JButton saveButton;
     private JButton defaultsButton;
@@ -46,26 +49,38 @@ public class SettingsFrame extends JFrame implements ActionListener
         sizeLabel = new JLabel("Rozmiar:");
         sizeLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         sizeLabel.setLocation(10, 40);
-        sizeLabel.setSize(80, 30);
+        sizeLabel.setSize(115, 30);
         add(sizeLabel);
 
         sizeTextField = new JTextField(SettingsParser.getSettings().get("size").toString());
         sizeTextField.setFont(new Font("Arial", Font.PLAIN, 14));
-        sizeTextField.setLocation(90, 42);
+        sizeTextField.setLocation(125, 42);
         sizeTextField.setSize(50, 25);
         add(sizeTextField);
 
         delayLabel = new JLabel("Opóźnienie:");
         delayLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         delayLabel.setLocation(10, 70);
-        delayLabel.setSize(80, 30);
+        delayLabel.setSize(115, 30);
         add(delayLabel);
 
         delayTextField = new JTextField(SettingsParser.getSettings().get("delay").toString());
         delayTextField.setFont(new Font("Arial", Font.PLAIN, 14));
-        delayTextField.setLocation(90, 72);
+        delayTextField.setLocation(125, 72);
         delayTextField.setSize(50, 25);
         add(delayTextField);
+
+        obstaclesLabel = new JLabel("Liczba przeszkód:");
+        obstaclesLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        obstaclesLabel.setLocation(10, 100);
+        obstaclesLabel.setSize(115, 30);
+        add(obstaclesLabel);
+
+        obstaclesTextField = new JTextField(SettingsParser.getSettings().get("obstacles").toString());
+        obstaclesTextField.setFont(new Font("Arial", Font.PLAIN, 14));
+        obstaclesTextField.setLocation(125, 102);
+        obstaclesTextField.setSize(50, 25);
+        add(obstaclesTextField);
 
         saveButton = new JButton("Zapisz");
         saveButton.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -100,12 +115,17 @@ public class SettingsFrame extends JFrame implements ActionListener
             HashMap<String, Integer> settingsDict = new HashMap<>();
             try
             {
-                if (Integer.valueOf(sizeTextField.getText()) <= 2)
+                if (Integer.parseInt(sizeTextField.getText()) <= 2)
                     throw new IllegalArgumentException("Rozmiar musi być większy od 2!");
-                if (Integer.valueOf(delayTextField.getText()) <= 0)
+                if (Integer.parseInt(delayTextField.getText()) <= 0)
                     throw new IllegalArgumentException("Opóźnienie musi być większe od 0!");
+                if (Integer.parseInt(obstaclesTextField.getText()) < 0)
+                    throw new IllegalArgumentException("Liczba przeszkód nie może być ujemna!");
+                if (Integer.parseInt(obstaclesTextField.getText()) > Integer.parseInt(sizeTextField.getText()) * Integer.parseInt(sizeTextField.getText()) - 2)
+                    throw new IllegalArgumentException("Za dużo przeszkód!");
                 settingsDict.put("size", Integer.valueOf(sizeTextField.getText()));
                 settingsDict.put("delay", Integer.valueOf(delayTextField.getText()));
+                settingsDict.put("obstacles", Integer.valueOf(obstaclesTextField.getText()));
                 try
                 {
                     SettingsParser.saveSettings(settingsDict);
@@ -132,6 +152,7 @@ public class SettingsFrame extends JFrame implements ActionListener
                 defaultsDict = SettingsParser.getDefaults();
                 sizeTextField.setText(defaultsDict.get("size").toString());
                 delayTextField.setText(defaultsDict.get("delay").toString());
+                obstaclesTextField.setText(defaultsDict.get("obstacles").toString());
             }
             catch (FileNotFoundException ex)
             {
@@ -143,7 +164,7 @@ public class SettingsFrame extends JFrame implements ActionListener
             try
             {
                 var settingsDict = SettingsParser.getSettings();
-                SnakeGameMap snakeGameMap = new SnakeGameMap(settingsDict.get("size"));
+                SnakeGameMap snakeGameMap = new SnakeGameMap(settingsDict.get("size"), settingsDict.get("obstacles"));
                 GameFrame gameFrame = new GameFrame(snakeGameMap, settingsDict.get("delay"));
                 dispose();
             }

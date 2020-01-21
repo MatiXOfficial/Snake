@@ -26,7 +26,8 @@ public class SettingsParser
     {
         FileWriter fw = new FileWriter(settingsFile);
         fw.write("size=" + settingsDict.get("size"));   fw.write("\n");
-        fw.write("delay=" + settingsDict.get("delay"));
+        fw.write("delay=" + settingsDict.get("delay")); fw.write("\n");
+        fw.write("obstacles=" + settingsDict.get("obstacles"));
         fw.close();
     }
 

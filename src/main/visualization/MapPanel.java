@@ -33,6 +33,7 @@ public class MapPanel extends JPanel
         paintChessboard(g2d);
         paintSnake(g2d);
         paintFood(g2d);
+        paintObstacles(g2d);
     }
 
     private void paintChessboard(Graphics2D g2d)
@@ -112,5 +113,17 @@ public class MapPanel extends JPanel
         double x = vec.x * mult;
         double y = height - (vec.y + 1) * mult;
         g2d.fill(new Ellipse2D.Double(x, y, mult, mult));
+    }
+
+    private void paintObstacles(Graphics2D g2d)
+    {
+        g2d.setPaint(Color.BLACK);
+        var obstaclesList = this.gameMap.getObstaclesPositions();
+        for (Vector2d vec : obstaclesList)
+        {
+            double x = vec.x * mult;
+            double y= height - (vec.y + 1) * mult;
+            g2d.fill(new Rectangle2D.Double(x, y, mult, mult));
+        }
     }
 }
