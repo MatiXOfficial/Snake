@@ -15,10 +15,11 @@ public class SnakeGameMap
     private HashSet<Vector2d> freePositions;
     private LinkedList<Vector2d> obstaclesPositions;
     private Vector2d foodPosition;
+    private boolean wrapBoundaries;
 
     private static Random generator;
 
-    private SnakeGameMap(int size, int obstaclesNumber, Random generator)
+    private SnakeGameMap(int size, int obstaclesNumber, boolean wrapBoundaries, Random generator)
     {
         if (size <= 2)
             throw new IllegalArgumentException("Size has to be greater than 2!");
@@ -33,6 +34,7 @@ public class SnakeGameMap
         this.size = size;
         this.bottomLeft = new Vector2d(0, 0);
         this.topRight = new Vector2d(size - 1, size - 1);
+        this.wrapBoundaries = wrapBoundaries;
 
         this.freePositions = new HashSet<>();
         for (int x = bottomLeft.x; x <= topRight.x; x++)
@@ -49,9 +51,9 @@ public class SnakeGameMap
         this.foodPosition = getRandomFreePosition();
     }
 
-    public SnakeGameMap(int size, int obstaclesNumber)
+    public SnakeGameMap(int size, int obstaclesNumber, boolean wrapBoundaries)
     {
-        this(size, obstaclesNumber, new Random());
+        this(size, obstaclesNumber, wrapBoundaries, new Random());
     }
 
     public LinkedList<Vector2d> getSnakeOccupiedPositions()
@@ -77,6 +79,8 @@ public class SnakeGameMap
             snake.rotateHeadRight();
         Vector2d previousEndPosition = snake.getEndPosition();
         snake.moveForward();
+        if (wrapBoundaries)
+            snake.updateHeadPositionWithBoundaries(this.bottomLeft, this.topRight);
         if (snake.getHeadPosition().equals(foodPosition))
         {
             snake.eat();

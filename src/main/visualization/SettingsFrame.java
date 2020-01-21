@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class SettingsFrame extends JFrame implements ActionListener
 {
     private int width = 315;
-    private int height = 220;
+    private int height = 250;
 
     private JLabel settingsTitleLabel;
 
@@ -26,6 +26,9 @@ public class SettingsFrame extends JFrame implements ActionListener
 
     private JLabel obstaclesLabel;
     private JTextField obstaclesTextField;
+
+    private JLabel wrapBoundariesLabel;
+    private JCheckBox wrapBoundariesCheckBox;
 
     private JButton saveButton;
     private JButton defaultsButton;
@@ -49,38 +52,48 @@ public class SettingsFrame extends JFrame implements ActionListener
         sizeLabel = new JLabel("Rozmiar:");
         sizeLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         sizeLabel.setLocation(10, 40);
-        sizeLabel.setSize(115, 30);
+        sizeLabel.setSize(120, 30);
         add(sizeLabel);
 
         sizeTextField = new JTextField(SettingsParser.getSettings().get("size").toString());
         sizeTextField.setFont(new Font("Arial", Font.PLAIN, 14));
-        sizeTextField.setLocation(125, 42);
+        sizeTextField.setLocation(130, 42);
         sizeTextField.setSize(50, 25);
         add(sizeTextField);
 
         delayLabel = new JLabel("Opóźnienie:");
         delayLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         delayLabel.setLocation(10, 70);
-        delayLabel.setSize(115, 30);
+        delayLabel.setSize(120, 30);
         add(delayLabel);
 
         delayTextField = new JTextField(SettingsParser.getSettings().get("delay").toString());
         delayTextField.setFont(new Font("Arial", Font.PLAIN, 14));
-        delayTextField.setLocation(125, 72);
+        delayTextField.setLocation(130, 72);
         delayTextField.setSize(50, 25);
         add(delayTextField);
 
         obstaclesLabel = new JLabel("Liczba przeszkód:");
         obstaclesLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         obstaclesLabel.setLocation(10, 100);
-        obstaclesLabel.setSize(115, 30);
+        obstaclesLabel.setSize(120, 30);
         add(obstaclesLabel);
 
         obstaclesTextField = new JTextField(SettingsParser.getSettings().get("obstacles").toString());
         obstaclesTextField.setFont(new Font("Arial", Font.PLAIN, 14));
-        obstaclesTextField.setLocation(125, 102);
+        obstaclesTextField.setLocation(130, 102);
         obstaclesTextField.setSize(50, 25);
         add(obstaclesTextField);
+
+        wrapBoundariesLabel = new JLabel("Zawijanie krawędzi:");
+        wrapBoundariesLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+        wrapBoundariesLabel.setLocation(10, 130);
+        wrapBoundariesLabel.setSize(120, 30);
+        add(wrapBoundariesLabel);
+
+        wrapBoundariesCheckBox = new JCheckBox("", SettingsParser.getSettings().get("wrapBoundaries") == 1);
+        wrapBoundariesCheckBox.setBounds(142, 132, 25, 25);
+        add(wrapBoundariesCheckBox);
 
         saveButton = new JButton("Zapisz");
         saveButton.setFont(new Font("Arial", Font.PLAIN, 12));
@@ -126,6 +139,7 @@ public class SettingsFrame extends JFrame implements ActionListener
                 settingsDict.put("size", Integer.valueOf(sizeTextField.getText()));
                 settingsDict.put("delay", Integer.valueOf(delayTextField.getText()));
                 settingsDict.put("obstacles", Integer.valueOf(obstaclesTextField.getText()));
+                settingsDict.put("wrapBoundaries", wrapBoundariesCheckBox.isSelected() ? 1 : 0);
                 try
                 {
                     SettingsParser.saveSettings(settingsDict);
@@ -153,6 +167,7 @@ public class SettingsFrame extends JFrame implements ActionListener
                 sizeTextField.setText(defaultsDict.get("size").toString());
                 delayTextField.setText(defaultsDict.get("delay").toString());
                 obstaclesTextField.setText(defaultsDict.get("obstacles").toString());
+                wrapBoundariesCheckBox.setSelected(defaultsDict.get("wrapBoundaries") == 1);
             }
             catch (FileNotFoundException ex)
             {
@@ -164,7 +179,7 @@ public class SettingsFrame extends JFrame implements ActionListener
             try
             {
                 var settingsDict = SettingsParser.getSettings();
-                SnakeGameMap snakeGameMap = new SnakeGameMap(settingsDict.get("size"), settingsDict.get("obstacles"));
+                SnakeGameMap snakeGameMap = new SnakeGameMap(settingsDict.get("size"), settingsDict.get("obstacles"), settingsDict.get("wrapBoundaries") == 1);
                 GameFrame gameFrame = new GameFrame(snakeGameMap, settingsDict.get("delay"));
                 dispose();
             }

@@ -56,6 +56,13 @@ public class Snake
         this.headOrientation = this.headOrientation.leftRotate();
     }
 
+    public void updateHeadPositionWithBoundaries(Vector2d bottomLeft, Vector2d topRight)
+    {
+        Vector2d headPosition = this.occupiedPositions.getLast();
+        this.occupiedPositions.removeLast();
+        this.occupiedPositions.add(headPosition.updateWithBoundaries(bottomLeft, topRight));
+    }
+
     public void moveForward()
     {
         this.occupiedPositions.add(this.occupiedPositions.getLast().add(this.headOrientation.toVector()));

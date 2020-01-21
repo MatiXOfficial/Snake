@@ -43,6 +43,14 @@ public class Vector2d
         return (this.x >= that.x && this.y >= that.y);
     }
 
+    public Vector2d updateWithBoundaries(Vector2d bottomLeft, Vector2d topRight)
+    {
+        int dx = topRight.x - bottomLeft.x + 1, dy = topRight.y - bottomLeft.y + 1;
+        int xNew = bottomLeft.x + (this.x - bottomLeft.x + dx) % dx;
+        int yNew = bottomLeft.y + (this.y - bottomLeft.y + dy) % dy;
+        return new Vector2d(xNew, yNew);
+    }
+
     public int hashCode()
     {
         int hash = 13;
