@@ -1,9 +1,6 @@
 package functionality;
 
-import settings.SettingsParser;
-import visualization.GameFrame;
 import visualization.SettingsFrame;
-
 import java.io.FileNotFoundException;
 
 public class Game
