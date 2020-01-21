@@ -1,23 +1,16 @@
 package visualization;
 
 import functionality.OrientationChange;
-import functionality.Snake;
 import functionality.SnakeGameMap;
-import functionality.Vector2d;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.LinkedList;
 
 public class GameFrame extends JFrame implements KeyListener
 {
-    private int width;
-    private int height;
     private SnakeGameMap gameMap;
-    private double mult;
-    private int delay;
 
     private MapPanel mapPanel;
     private JLabel currentResult;
@@ -34,10 +27,9 @@ public class GameFrame extends JFrame implements KeyListener
         setLayout(null);
 
         this.gameMap = gameMap;
-        this.width = 640;
-        this.height = 700;
-        this.mult = 600.0 / this.gameMap.getSize();
-        this.delay = delay;
+        int width = 640;
+        int height = 700;
+        double mult = 600.0 / this.gameMap.getSize();
         this.orientationChange = OrientationChange.FORWARD;
 
         setSize(width, height);

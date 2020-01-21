@@ -41,13 +41,14 @@ public class SnakeGameMap
             for (int y = bottomLeft.y; y <= topRight.y; y++)
                 freePositions.add(new Vector2d(x, y));
 
+        Vector2d snakeVector = new Vector2d((size - 1) / 2, (size - 1) / 2);
+        this.snake = new Snake(snakeVector);
+        freePositions.remove(snakeVector);
+
         this.obstaclesPositions = new LinkedList<>();
         for (int i = 0; i < obstaclesNumber; i++)
             this.obstaclesPositions.add(getRandomFreePosition());
 
-        Vector2d snakeVector = new Vector2d((size - 1) / 2, (size - 1) / 2);
-        this.snake = new Snake(snakeVector);
-        freePositions.remove(snakeVector);
         this.foodPosition = getRandomFreePosition();
     }
 
@@ -84,8 +85,6 @@ public class SnakeGameMap
         if (snake.getHeadPosition().equals(foodPosition))
         {
             snake.eat();
-            if (!previousEndPosition.equals(snake.getEndPosition()))
-                this.freePositions.add(previousEndPosition);
             this.foodPosition = getRandomFreePosition();
         }
         else if (!freePositions.contains(snake.getHeadPosition()))
@@ -94,10 +93,10 @@ public class SnakeGameMap
         }
         else
         {
-            if (!previousEndPosition.equals(snake.getEndPosition()))
-                this.freePositions.add(previousEndPosition);
             this.freePositions.remove(snake.getHeadPosition());
         }
+        if (!previousEndPosition.equals(snake.getEndPosition()))
+            this.freePositions.add(previousEndPosition);
     }
 
     public int getResult()
@@ -112,12 +111,8 @@ public class SnakeGameMap
 
     private Vector2d getRandomFreePosition()
     {
-        Vector2d position;
-        do {
-            int i = generator.nextInt(this.freePositions.size());
-            position = (Vector2d) freePositions.toArray()[i];
-        }
-        while (position.equals(new Vector2d((this.size - 1) / 2, (this.size - 1) / 2)));
+        int i = generator.nextInt(this.freePositions.size());
+        Vector2d position = (Vector2d) freePositions.toArray()[i];
         this.freePositions.remove(position);
         return position;
     }

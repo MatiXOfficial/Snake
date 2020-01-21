@@ -1,7 +1,5 @@
 package functionality;
 
-import java.util.Random;
-
 public class Vector2d
 {
     public final int x;
